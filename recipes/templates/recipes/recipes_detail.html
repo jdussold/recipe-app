@@ -1,0 +1,71 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Head content here -->
+    <style>
+      /* CSS styling for the page */
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+        text-align: left;
+        background-image: url("{% static 'recipes/images/recipe-detail-background.jpg' %}");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        color: white;
+        text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      }
+
+      /* CSS styling for the container */
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: rgba(0, 0, 0, 0.7);
+        border-radius: 12px;
+        box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
+      }
+
+      /* CSS styling for the image */
+      .recipe-image {
+        display: block;
+        margin: 0 auto;
+        width: 400px;
+        height: 265px;
+        object-fit: cover;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <img
+        src="{{ object.pic.url }}"
+        alt="{{ object.title }}"
+        class="recipe-image"
+      />
+      <h2>{{ object.title }}:</h2>
+
+      <p>{{ object.description }}</p>
+
+      <p>Ingredients:</p>
+      <ul>
+        {% for ingredient in object.ingredients.all %}
+        <li>{{ ingredient }}</li>
+        {% endfor %}
+      </ul>
+
+      <p>Cooking Time: {{ object.cooking_time }} min</p>
+
+      <p>Difficulty Level: {{ object.difficulty }}</p>
+    </div>
+  </body>
+</html>
