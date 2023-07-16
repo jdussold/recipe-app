@@ -1,5 +1,7 @@
 from django.db import models
-from django.db.models import Count
+from recipeingredients.models import RecipeIngredient
+from ingredients.models import Ingredient
+from django.shortcuts import reverse
 
 
 class Recipe(models.Model):
@@ -7,16 +9,11 @@ class Recipe(models.Model):
     cooking_time = models.PositiveIntegerField(help_text="In minutes")
     description = models.TextField()
     difficulty = models.CharField(max_length=20, default="TBD")
-    ingredients = models.ManyToManyField(
-        "ingredients.Ingredient", through="recipeingredients.RecipeIngredient"
-    )
+    ingredients = models.ManyToManyField(Ingredient, through=RecipeIngredient)
+    pic = models.ImageField(upload_to="recipes", default="no_picture.jpeg")
 
     def calculate_difficulty(self):
-        from recipeingredients.models import (
-            RecipeIngredient,
-        )
-
-        num_ingredients = RecipeIngredient.objects.filter(recipe=self).count()
+        num_ingredients = self.ingredients.count()
 
         if self.cooking_time < 10 and num_ingredients < 4:
             return "Easy"
@@ -33,3 +30,6 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse("recipes:recipes_detail", kwargs={"pk": self.pk})
