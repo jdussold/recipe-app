@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -11,18 +13,11 @@
         align-items: center;
         justify-content: center;
         height: 100vh;
+        background-image: url("{% static 'recipes/images/recipe-welcome.jpg' %}");
+        background-size: cover;
+        background-position: center;
       }
     </style>
   </head>
-  <body>
-    <h1>Welcome to My Recipes App</h1>
-    <ul>
-      {% for recipe in recipes %}
-      <li>
-        <a href="/recipes/{{ recipe.id }}">{{ recipe.title }}</a>
-      </li>
-      {% endfor %}
-    </ul>
-    <a href="/recipes/new">Add a new recipe</a>
-  </body>
+  <body></body>
 </html>
