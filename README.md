@@ -18,6 +18,52 @@ This is a recipe management application that allows users to create, modify, and
 
 - **Access Statistics and Visualizations**: The app goes beyond basic recipe management by offering statistics and visualizations based on recipe trends and data analysis. Users can gain insights into popular ingredients, most-rated recipes, and other interesting patterns. These insights can help users discover new recipes, identify cooking trends, and make informed decisions in their culinary endeavors.
 
+- **Database Connectivity and Design**: The app connects to a PostgreSQL database for production. During development, an SQLite database is used. The database configuration can be easily set up in the project's settings file.
+
+  The application has four main entities:
+
+  - `User`
+  - `Recipe`
+  - `Ingredient`
+  - `RecipeIngredient`
+
+  Here are the tables representing these entities:
+
+  ### User
+
+  | Attribute | Type              |
+  | --------- | ----------------- |
+  | id        | Unique Identifier |
+  | username  | String            |
+  | password  | String            |
+
+  ### Recipe
+
+  | Attribute    | Type              |
+  | ------------ | ----------------- |
+  | id           | Unique Identifier |
+  | user_id (FK) | Foreign Key       |
+  | title        | String            |
+  | description  | String            |
+  | cooking_time | Integer           |
+  | difficulty   | String            |
+
+  ### Ingredient
+
+  | Attribute | Type              |
+  | --------- | ----------------- |
+  | id        | Unique Identifier |
+  | name      | String            |
+
+  ### RecipeIngredient
+
+  | Attribute          | Type              |
+  | ------------------ | ----------------- |
+  | id                 | Unique Identifier |
+  | recipe_id (FK)     | Foreign Key       |
+  | ingredient_id (FK) | Foreign Key       |
+  | quantity           | Integer           |
+
 ## Technical Requirements
 
 To run the application, ensure the following technical requirements are met:
