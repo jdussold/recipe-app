@@ -90,9 +90,33 @@
         color: white;
         text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
       }
+
+      /* CSS styling for the logout button */
+      .logout-button {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background-color: #d9534f;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .logout-button:hover {
+        background-color: #c9302c;
+      }
     </style>
   </head>
   <body>
+    <div class="logout-button">
+      <a href="{% url 'logout' %}" style="color: #fff; text-decoration: none"
+        >Logout</a
+      >
+    </div>
     <h1>Recipes</h1>
     <ul class="recipe-list">
       {% for object in object_list %}
