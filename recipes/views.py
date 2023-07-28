@@ -1,16 +1,24 @@
 from io import BytesIO
 import base64
-from typing import Any, Dict
-from django.shortcuts import render
-from django.views.generic import ListView, DetailView
-from .models import Recipe
-from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import RecipeSearchForm
+import logging
+
 import pandas as pd
-from django.http import HttpResponse, JsonResponse, Http404
 import matplotlib.pyplot as plt
+
+from typing import Any, Dict
+from django.shortcuts import render, redirect
+from django.views.generic import ListView, DetailView
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, JsonResponse, Http404
 from django.core.paginator import Paginator
+from django.forms import formset_factory
+from django.db import transaction
+
+from .models import Recipe, Ingredient, RecipeIngredient
+from .forms import RecipeSearchForm, RecipeForm, NewIngredientForm
+from ingredients.models import Ingredient
 
 
 # Create your views here.
@@ -66,7 +74,7 @@ class RecipesListView(LoginRequiredMixin, ListView):
     model = Recipe
     template_name = "recipes/recipes_list.html"
     context_object_name = "recipes"
-    paginate_by = 10
+    paginate_by = 12
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -123,15 +131,10 @@ class RecipesListView(LoginRequiredMixin, ListView):
                 "error_message"
             ] = "There are no recipes with that combination of ingredients."
 
-        # Pagination
-        paginator = Paginator(context["recipes"], self.paginate_by)
-        page_number = self.request.GET.get("page")
-        page_obj = paginator.get_page(page_number)
-        context["page_obj"] = page_obj
-
         return context
 
 
+@login_required
 def export_recipes_csv(request):
     # Get the filter parameters from the request
     recipe_name = request.GET.get("Recipe_Name")
@@ -168,6 +171,7 @@ def export_recipes_csv(request):
     return response
 
 
+@login_required
 def generate_chart(request):
     chart_type = request.GET.get("chart_type")
     recipe_name = request.GET.get("Recipe_Name")
@@ -211,7 +215,97 @@ def generate_chart(request):
     return JsonResponse({"chart_image": chart_image})
 
 
+@login_required
+def about_page(request):
+    return render(request, "recipes/about.html")
+
+
 class RecipesDetailView(LoginRequiredMixin, DetailView):
     model = Recipe
     template_name = "recipes/recipes_detail.html"
     context_object_name = "recipe"
+
+
+@login_required
+def add_recipe(request):
+    IngredientFormSet = formset_factory(NewIngredientForm, extra=1, max_num=5)
+
+    if request.method == "POST":
+        form = RecipeForm(request.POST, request.FILES)
+        formset = IngredientFormSet(request.POST)
+
+        if form.is_valid() and formset.is_valid():
+            try:
+                # 1. Save the recipe instance directly to get an ID
+                recipe = form.save(commit=False)
+
+                # 2. Calculate the difficulty based on total ingredients
+                selected_ingredients_count = len(form.cleaned_data["ingredients"])
+                new_ingredients_count = sum(
+                    1
+                    for ingredient_form in formset
+                    if ingredient_form.cleaned_data.get("new_ingredient")
+                )
+                total_ingredients = selected_ingredients_count + new_ingredients_count
+
+                if recipe.cooking_time < 10 and total_ingredients < 4:
+                    recipe.difficulty = "Easy"
+                elif recipe.cooking_time < 10 and total_ingredients >= 4:
+                    recipe.difficulty = "Medium"
+                elif recipe.cooking_time >= 10 and total_ingredients < 4:
+                    recipe.difficulty = "Intermediate"
+                else:
+                    recipe.difficulty = "Hard"
+
+                # 3. Now that difficulty is set, save the recipe again
+                recipe.save()
+                form.save_m2m()  # Needed because we used commit=False earlier
+
+                # 4. Process the ingredients
+                for ingredient_form in formset:
+                    new_ingredient_name = ingredient_form.cleaned_data.get(
+                        "new_ingredient"
+                    )
+                    ingredient = None
+
+                    if new_ingredient_name:
+                        ingredient, created = Ingredient.objects.get_or_create(
+                            name=new_ingredient_name
+                        )
+
+                    if ingredient:
+                        # Associate the ingredient with the recipe using the through model
+                        RecipeIngredient.objects.create(
+                            recipe=recipe, ingredient=ingredient
+                        )
+
+                messages.success(request, "Recipe added successfully.")
+
+                # Check if the "Save & Add Another" button was pressed
+                if "save_and_add" in request.POST:
+                    return redirect(
+                        "recipes:add_recipe"
+                    )  # Redirect to the same "Add Recipe" page
+
+                return redirect(recipe)
+
+            except Exception as e:
+                print("Error while saving recipe:", str(e))
+                messages.error(request, "Error while saving recipe. Please try again.")
+
+        else:
+            print("Form errors:", form.errors)
+            print("Formset errors:")
+            for i, form in enumerate(formset):
+                print(f"Formset form {i+1} errors:", form.errors)
+            messages.error(
+                request, "Form validation failed. Please check the entered data."
+            )
+
+    else:
+        form = RecipeForm()
+        form.fields["ingredients"].queryset = Ingredient.objects.order_by("name")
+        formset = IngredientFormSet()
+
+    context = {"form": form, "formset": formset}
+    return render(request, "recipes/add_recipe.html", context)
