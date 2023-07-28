@@ -1,0 +1,80 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'recipes/css/recipes_styles.css' %}"
+    />
+  </head>
+  <body class="about">
+    <div class="header">
+      <div class="home-button">
+        <a href="{% url 'recipes:recipes_list' %}">Home</a>
+      </div>
+      <div class="about-button">
+        <a href="{% url 'recipes:about' %}">About</a>
+      </div>
+      <div class="logout-button">
+        <a href="{% url 'logout' %}" style="color: #fff; text-decoration: none">
+          Logout
+        </a>
+      </div>
+    </div>
+    <div class="about-message">
+      <h2>About The Developer</h2>
+      <p>
+        My name is John Dussold, and I'm the developer of this fantastic Recipe
+        App. I had a lot of fun designing this app from back to front, and I'm
+        thrilled to share it with you. If you want to see more of my work,
+        please check out my portfolio, GitHub, and contact information at the
+        following links.
+      </p>
+      <br />
+      <div class="links-container">
+        <button class="link-button">
+          <a
+            href="https://jdussold.github.io/portfolio-site/"
+            target="_blank"
+            rel="noopener"
+            >Portfolio</a
+          >
+        </button>
+        <button class="link-button">
+          <a href="https://github.com/jdussold" target="_blank" rel="noopener"
+            >GitHub</a
+          >
+        </button>
+        <button class="link-button">
+          <a href="mailto:jdussold@gmail.com" target="_blank" rel="noopener"
+            >Email</a
+          >
+        </button>
+      </div>
+
+      <br />
+      <h2>About The App</h2>
+      <p>
+        The Recipe App, your go-to solution for creating, modifying, and
+        discovering a wide range of recipes. This app is designed to simplify
+        the process of organizing and exploring culinary creations. Its
+        user-friendly interface and powerful features make managing recipes a
+        seamless experience. You can easily create new recipes, search for
+        recipes based on specific ingredients, and view detailed information
+        about each recipe, including automatic ratings based on difficulty
+        level. Moreover, you can contribute your own recipes to the ever-growing
+        database, and the app also provides valuable insights through statistics
+        and visualizations.
+      </p>
+    </div>
+  </body>
+</html>
