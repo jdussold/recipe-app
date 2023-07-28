@@ -1,4 +1,4 @@
-![Recipe Image](docs/readme_images/recipe_image.png){ width=500px }
+![Recipe Image](./docs/readme_images/home-page.png){ width=500px }
 
 # Recipe Management App
 
