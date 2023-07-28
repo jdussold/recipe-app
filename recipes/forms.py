@@ -1,5 +1,5 @@
 from django import forms
-from .models import Ingredient
+from .models import Ingredient, Recipe
 
 CHART_CHOICES = (
     ("#1", "Bar Chart"),
@@ -37,3 +37,30 @@ class RecipeSearchForm(forms.Form):
                 "Please enter a recipe name or select an ingredient."
             )
         return cleaned_data
+
+
+class RecipeForm(forms.ModelForm):
+    class Meta:
+        model = Recipe
+        exclude = ["difficulty"]  # Exclude the 'difficulty' field from the form
+        widgets = {
+            "title": forms.TextInput(attrs={"class": "form-item"}),
+            "cooking_time": forms.NumberInput(attrs={"class": "form-item"}),
+            "description": forms.Textarea(attrs={"class": "form-item"}),
+            "ingredients": forms.SelectMultiple(
+                attrs={
+                    "class": "form-item",
+                    "title": "Please select an item from the list. Hold CTRL to select multiple items",
+                }
+            ),
+            "pic": forms.FileInput(attrs={"class": "form-item"}),
+        }
+
+
+class NewIngredientForm(forms.Form):
+    new_ingredient = forms.CharField(
+        max_length=255,
+        required=False,
+        help_text="Add a new ingredient",
+        widget=forms.TextInput(attrs={"class": "form-item"}),
+    )
