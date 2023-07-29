@@ -123,15 +123,15 @@ The application uses three main models to manage recipes and ingredients:
 
 The `Ingredient` model represents individual ingredients used in various recipes. Each ingredient has a unique name, which is stored as a character field (`CharField`) with a maximum length of 255 characters.
 
-pythonCopy code
-
-`from django.db import models
+```
+from django.db import models
 
 class Ingredient(models.Model):
 name = models.CharField(max_length=255)
 
     def __str__(self):
         return self.name`
+```
 
 The `__str__` method is overridden to display the name of the ingredient as its string representation, making it more readable and identifiable in the admin interface and other places where the ingredient object is used.
 
@@ -139,9 +139,8 @@ The `__str__` method is overridden to display the name of the ingredient as its 
 
 The `RecipeIngredient` model acts as an intermediary between the `Recipe` and `Ingredient` models, creating a Many-to-Many relationship. It represents the ingredients used in a specific recipe. Each `RecipeIngredient` instance is associated with a single recipe and a single ingredient.
 
-pythonCopy code
-
-`from django.db import models
+```
+from django.db import models
 from recipes.models import Recipe
 from ingredients.models import Ingredient
 
@@ -158,7 +157,8 @@ related_name="recipes_used",
 )
 
     def __str__(self):
-        return f"{self.ingredient} - {self.recipe}"`
+        return f"{self.ingredient} - {self.recipe}"
+```
 
 The `recipe` field is a ForeignKey to the `Recipe` model, representing the recipe to which the ingredient belongs. The `related_name` attribute allows accessing the ingredients used in a recipe using the `ingredients_used` attribute of a `Recipe` instance.
 
