@@ -30,14 +30,6 @@ To get started with the Recipe Management App, follow these steps:
 
 ## How to Use the App
 
-### User Registration and Login
-
-- Users can register for an account to access additional features like adding their own recipes and saving favorites.
-
-- On the home page, click the "Register" link to create a new account.
-
-- Once registered, use the "Login" link on the home page to access your account.
-
 ### Browsing Recipes
 
 - On the home page, you can see a list of available recipes.
@@ -110,22 +102,71 @@ The Recipe Management App is currently maintained by the developer, John Dussold
 
 The application uses three main models to manage recipes and ingredients:
 
-1. **Recipe Model** (`recipes\models.py`):
+1.  Recipe Model (`recipes\models.py`):
 
-- `title`: The title of the recipe (CharField).
-- `cooking_time`: The cooking time in minutes (PositiveIntegerField).
-- `description`: A detailed description of the recipe (TextField).
-- `difficulty`: The difficulty level of the recipe, automatically calculated based on cooking time and number of ingredients (CharField).
-- `ingredients`: A ManyToMany relationship with the `Ingredient` model through the `RecipeIngredient` model.
+    - `title`: The title of the recipe (CharField).
+    - `cooking_time`: The cooking time in minutes (PositiveIntegerField).
+    - `description`: A detailed description of the recipe (TextField).
+    - `difficulty`: The difficulty level of the recipe, automatically calculated based on cooking time and number of ingredients (CharField).
+    - `ingredients`: A ManyToMany relationship with the `Ingredient` model through the `RecipeIngredient` model.
 
-2. **Ingredient Model** (`ingredients\models.py`):
+2.  Ingredient Model (`ingredients\models.py`):
 
-- `name`: The name of the ingredient (CharField).
+    - `name`: The name of the ingredient (CharField).
 
-3. **RecipeIngredient Model** (`recipeingredients\models.py`):
+3.  RecipeIngredient Model (`recipeingredients\models.py`):
 
-- `recipe`: A ForeignKey relationship with the `Recipe` model, representing the recipe that uses the ingredient.
-- `ingredient`: A ForeignKey relationship with the `Ingredient` model, representing the ingredient used in the recipe.
+    - `recipe`: A ForeignKey relationship with the `Recipe` model, representing the recipe that uses the ingredient.
+    - `ingredient`: A ForeignKey relationship with the `Ingredient` model, representing the ingredient used in the recipe.
+
+### Ingredient Model (`ingredients\models.py`):
+
+The `Ingredient` model represents individual ingredients used in various recipes. Each ingredient has a unique name, which is stored as a character field (`CharField`) with a maximum length of 255 characters.
+
+pythonCopy code
+
+`from django.db import models
+
+class Ingredient(models.Model):
+name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name`
+
+The `__str__` method is overridden to display the name of the ingredient as its string representation, making it more readable and identifiable in the admin interface and other places where the ingredient object is used.
+
+### RecipeIngredient Model (`recipeingredients\models.py`):
+
+The `RecipeIngredient` model acts as an intermediary between the `Recipe` and `Ingredient` models, creating a Many-to-Many relationship. It represents the ingredients used in a specific recipe. Each `RecipeIngredient` instance is associated with a single recipe and a single ingredient.
+
+pythonCopy code
+
+`from django.db import models
+from recipes.models import Recipe
+from ingredients.models import Ingredient
+
+class RecipeIngredient(models.Model):
+recipe = models.ForeignKey(
+Recipe, on_delete=models.CASCADE, related_name="ingredients_used"
+)
+ingredient = models.ForeignKey(
+Ingredient,
+on_delete=models.CASCADE,
+null=True,
+blank=True,
+related_name="recipes_used",
+)
+
+    def __str__(self):
+        return f"{self.ingredient} - {self.recipe}"`
+
+The `recipe` field is a ForeignKey to the `Recipe` model, representing the recipe to which the ingredient belongs. The `related_name` attribute allows accessing the ingredients used in a recipe using the `ingredients_used` attribute of a `Recipe` instance.
+
+The `ingredient` field is a ForeignKey to the `Ingredient` model, representing the ingredient itself. The `related_name` attribute allows accessing the recipes that use a specific ingredient using the `recipes_used` attribute of an `Ingredient` instance.
+
+The `__str__` method is overridden to provide a meaningful representation of a `RecipeIngredient` instance, displaying the ingredient's name and the recipe's title.
+
+These models work together to manage the relationships between recipes and ingredients, providing a flexible and efficient way to organize and explore culinary creations in the Recipe Management App.
 
 ## Calculating Recipe Difficulty
 
