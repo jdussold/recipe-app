@@ -1,8 +1,92 @@
-![Recipe Image](./docs/readme_images/home-page.png)
-
 # Recipe Management App
 
+![Recipe Image](./docs/readme_images/home-page.png)
+
 This is a recipe management application that allows users to create, modify, and discover a wide range of recipes. With its user-friendly interface and powerful features, the app simplifies the process of organizing and exploring recipes. Whether you're a cooking enthusiast or a professional chef, this app provides a seamless experience for managing your culinary creations.
+
+## Getting Started
+
+To get started with the Recipe Management App, follow these steps:
+
+1. **Installation**: Ensure you have Python 3.6+ and Django 3 installed on your machine.
+
+2. **Clone the Repository**: Clone the project repository from GitHub to your local machine.
+
+3. **Install Dependencies**: Install the required modules by running the following command in your terminal:
+
+`pip install -r requirements.txt`
+
+4. **Database Configuration**: Set up the database configuration in the project's settings file. For development, use SQLite. For production, configure PostgreSQL.
+
+5. **Run Migrations**: Apply the database migrations using the following command:
+
+`python manage.py migrate`
+
+6. **Start the Server**: Start the development server with the following command:
+
+`python manage.py runserver`
+
+7. **Access the App**: Open a web browser and navigate to `http://localhost:8000` to access the application.
+
+## How to Use the App
+
+### User Registration and Login
+
+- Users can register for an account to access additional features like adding their own recipes and saving favorites.
+
+- On the home page, click the "Register" link to create a new account.
+
+- Once registered, use the "Login" link on the home page to access your account.
+
+### Browsing Recipes
+
+- On the home page, you can see a list of available recipes.
+
+- Use the search bar to search for recipes by title or filter them based on specific ingredients.
+
+### Viewing Recipe Details
+
+- Click on a recipe title from the list to view its details.
+
+- The detailed view provides information such as cooking time, description, and ingredients used.
+
+### Adding New Recipes
+
+- If you are logged in, you can add your own recipes to the database.
+
+- Click the "Add Recipe" link in the navigation menu to access the recipe form.
+
+- Fill in the recipe details, including title, cooking time, description, and ingredients.
+
+- Click "Submit" to add your recipe to the database.
+
+### Exporting Recipes
+
+- Logged-in users can export search results to a CSV file for offline access or reference.
+
+- After performing a search, click the "Export" button to download the search results as a CSV file.
+
+### Data Visualization
+
+- The app offers various chart types for visualizing recipe data based on cooking times.
+
+- Use the "Generate Chart" link in the navigation menu to access data visualization options.
+
+### About Page
+
+- The "About" page provides information about the application and its features.
+
+## Getting Help
+
+If you encounter any issues or need help with the Recipe Management App, you can find support in the following ways:
+
+- **GitHub Repository**: Check the project's GitHub repository for open issues or raise a new issue if needed.
+
+- **Contact the Developer**: You can reach out to the developer, John Dussold, via the contact information provided in his [portfolio](https://jdussold.github.io/portfolio-site/).
+
+## Project Maintenance
+
+The Recipe Management App is currently maintained by the developer, John Dussold. He is responsible for handling bug fixes, feature enhancements, and ensuring the app's continued functionality. Feel free to contribute to the project by submitting pull requests or by providing valuable feedback to improve the application further.
 
 ## User Goals
 
@@ -28,19 +112,20 @@ The application uses three main models to manage recipes and ingredients:
 
 1. **Recipe Model** (`recipes\models.py`):
 
-   - `title`: The title of the recipe (CharField).
-   - `cooking_time`: The cooking time in minutes (PositiveIntegerField).
-   - `description`: A detailed description of the recipe (TextField).
-   - `difficulty`: The difficulty level of the recipe, automatically calculated based on cooking time and number of ingredients (CharField).
-   - `ingredients`: A ManyToMany relationship with the `Ingredient` model through the `RecipeIngredient` model.
+- `title`: The title of the recipe (CharField).
+- `cooking_time`: The cooking time in minutes (PositiveIntegerField).
+- `description`: A detailed description of the recipe (TextField).
+- `difficulty`: The difficulty level of the recipe, automatically calculated based on cooking time and number of ingredients (CharField).
+- `ingredients`: A ManyToMany relationship with the `Ingredient` model through the `RecipeIngredient` model.
 
 2. **Ingredient Model** (`ingredients\models.py`):
 
-   - `name`: The name of the ingredient (CharField).
+- `name`: The name of the ingredient (CharField).
 
 3. **RecipeIngredient Model** (`recipeingredients\models.py`):
-   - `recipe`: A ForeignKey relationship with the `Recipe` model, representing the recipe that uses the ingredient.
-   - `ingredient`: A ForeignKey relationship with the `Ingredient` model, representing the ingredient used in the recipe.
+
+- `recipe`: A ForeignKey relationship with the `Recipe` model, representing the recipe that uses the ingredient.
+- `ingredient`: A ForeignKey relationship with the `Ingredient` model, representing the ingredient used in the recipe.
 
 ## Calculating Recipe Difficulty
 
@@ -65,23 +150,23 @@ The application's database includes the following entities and their correspondi
 
 - **Recipe**:
 
-  - `id`: Unique Identifier (AutoField)
-  - `user_id (FK)`: ForeignKey to User model (Foreign Key)
-  - `title`: Recipe title (CharField)
-  - `description`: Recipe description (CharField)
-  - `cooking_time`: Cooking time in minutes (PositiveIntegerField)
-  - `difficulty`: Recipe difficulty (CharField)
+- `id`: Unique Identifier (AutoField)
+- `user_id (FK)`: ForeignKey to User model (Foreign Key)
+- `title`: Recipe title (CharField)
+- `description`: Recipe description (CharField)
+- `cooking_time`: Cooking time in minutes (PositiveIntegerField)
+- `difficulty`: Recipe difficulty (CharField)
 
 - **Ingredient**:
 
-  - `id`: Unique Identifier (AutoField)
-  - `name`: Ingredient name (CharField)
+- `id`: Unique Identifier (AutoField)
+- `name`: Ingredient name (CharField)
 
 - **RecipeIngredient**:
-  - `id`: Unique Identifier (AutoField)
-  - `recipe_id (FK)`: ForeignKey to Recipe model (Foreign Key)
-  - `ingredient_id (FK)`: ForeignKey to Ingredient model (Foreign Key)
-  - `quantity`: Quantity of the ingredient used in the recipe (IntegerField)
+- `id`: Unique Identifier (AutoField)
+- `recipe_id (FK)`: ForeignKey to Recipe model (Foreign Key)
+- `ingredient_id (FK)`: ForeignKey to Ingredient model (Foreign Key)
+- `quantity`: Quantity of the ingredient used in the recipe (IntegerField)
 
 Here are the tables representing these entities:
 
@@ -177,44 +262,6 @@ To run the application, ensure the following technical requirements are met:
 - **User-Friendly Interface**: The app prioritizes user experience with an intuitive and easy-to-use interface. It offers simple forms of input, clear instructions, and neatly presented menus for login and logout.
 
 - **Documentation and Tests**: The app is thoroughly documented, making it easy for developers to understand and modify the codebase. Additionally, it includes automated tests to ensure proper functionality. The project is uploaded to GitHub, along with a "requirements.txt" file containing the necessary modules.
-
-## Installation and Setup
-
-To run the application locally, follow these steps:
-
-1. Ensure Python 3.6+ and Django 3 are installed on your machine.
-2. Clone the project repository from GitHub.
-3. Install the required modules by running `pip install -r requirements.txt` in your terminal.
-4. Set up the database configuration in the project's settings file. For development, use SQLite. For production, configure PostgreSQL.
-5. Run the database migrations using the command `python manage.py migrate`.
-6. Start the development server with the command `python manage.py runserver`.
-7. Access the application by opening a web browser and navigating to `http://localhost:8000`.
-
-## Views and Functionality
-
-### Recipes List View
-
-The app has a list view that displays recipes based on user search criteria. Users can search for recipes by title and filter recipes based on specific ingredients. The list view presents the recipes in a paginated manner to ensure smooth navigation.
-
-### Recipes Detail View
-
-Each recipe has a dedicated detail view that provides comprehensive information about the recipe, including title, cooking time, description, and ingredients. Users can access this detailed view to get a complete understanding of a recipe before deciding to try it out.
-
-### Recipe Addition
-
-The app includes a feature that allows authenticated users to add new recipes to the database. Users can fill out a form with recipe details, including title, cooking time, description, and ingredients. The app automatically calculates the recipe difficulty based on the cooking time and the total number of ingredients.
-
-### Recipe Search and Export
-
-Authenticated users can perform searches for recipes based on their titles and ingredients. Additionally, users can export search results to a CSV file, allowing them to access the data offline or use it for their culinary reference.
-
-### Charts and Data Visualization
-
-The application offers various chart types for visualizing recipe data. Users can generate and view bar charts, pie charts, and line charts based on recipe cooking times. These visualizations provide insights into recipe trends and cooking time comparisons.
-
-### About Page
-
-The app includes an "About" page that provides information about the application, its features, and the purpose of its development.
 
 ## Further Improvements
 
