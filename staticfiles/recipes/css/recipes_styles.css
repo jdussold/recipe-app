@@ -1,0 +1,509 @@
+/* Shared styles */
+body {
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  text-align: left;
+  background-size: cover;
+  background-position: center;
+  color: white;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 12px;
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Styling for buttons */
+.login-button {
+  margin-top: 35%;
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.login-button:hover {
+  background-color: #0069d9;
+  text-decoration: none;
+}
+
+.home-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.home-button:hover {
+  background-color: #0069d9;
+}
+
+.about-button {
+  position: absolute;
+  top: 20px;
+  left: 135px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.about-button:hover {
+  background-color: #0069d9;
+}
+
+.logout-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: #d9534f;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background-color: #c9302c;
+}
+
+.add-button {
+  position: absolute;
+  top: 20px;
+  left: 250px;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.add-button:hover {
+  background-color: #218838;
+}
+
+.about-button a,
+.home-button a,
+.add-button a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.about-button a:hover,
+.home-button a:hover,
+.add-button a:hover {
+  text-decoration: none;
+}
+
+/* Styling for the recipes_detail page */
+body.recipes-detail {
+  background-image: url("/static/recipes/images/recipe-detail-background.jpg");
+}
+
+.recipe-image {
+  display: block;
+  margin: 0 auto;
+  max-width: 400px;
+  max-height: 265px;
+  object-fit: cover;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Styling for the recipes_home page */
+body.recipes-home {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-image: url("/static/recipes/images/recipe-welcome.jpg");
+}
+
+/* Styling for the recipes_list page */
+body.recipes-list,
+body.add-recipe {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-image: url("/static/recipes/images/recipe-list-background.jpg");
+}
+
+body.recipes-list h1 {
+  font-size: 5em;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.recipe-list {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  justify-content: center;
+}
+
+.recipe-item {
+  flex-basis: 400px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+
+.recipe-image-container {
+  position: relative;
+  width: 400px;
+  height: 265px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
+}
+
+img.recipe-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.recipe-title-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.recipe-image-container:hover .recipe-title-overlay {
+  opacity: 1;
+}
+
+/* Styling for the form */
+form {
+  text-align: center;
+  color: white;
+  margin-bottom: 40px;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.form-item {
+  display: inline-block;
+  margin: 0 20px;
+  padding: 8px;
+  font-size: 16px;
+}
+
+select.form-item,
+input[type="text"].form-item {
+  width: 200px;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #000;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+.select2-container--default .select2-results__option {
+  color: #007bff;
+  text-shadow: none;
+}
+
+/* Styling for the search button */
+button,
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 0 20px;
+  font-family: Poppins, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn {
+  background-color: #28a745;
+}
+
+.clear-button {
+  background-color: #d9534f;
+}
+
+button:hover {
+  background-color: #0069d9;
+}
+
+.btn:hover {
+  background-color: #218838;
+  text-decoration: none;
+}
+
+.clear-button:hover {
+  background-color: #c9302c;
+}
+
+/* Styling for the custom ingredient dropdown */
+.ingredient-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.ingredient-select {
+  width: 200px;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.ingredient-options {
+  display: none;
+  position: absolute;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  z-index: 1;
+}
+
+.ingredient-options.show {
+  display: block;
+}
+
+.ingredient-options label {
+  display: inline-block;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.ingredient-options label:hover {
+  background-color: #f9f9f9;
+}
+
+/* Styling for the success page */
+body.recipes-success,
+body.about {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-image: url("/static/recipes/images/recipe-loggedOut.jpg");
+}
+
+a {
+  color: #007bff;
+  font-size: 18px;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.success-message,
+.about-message,
+.about-message h2 {
+  padding: 40px;
+  background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  text-shadow: none;
+}
+
+.about-message {
+  margin: 5%;
+  max-width: 600px;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.about-message p {
+  text-align: left;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.links-container {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 20px;
+}
+
+.link {
+  margin: 0;
+}
+
+.link-button {
+  color: #fff;
+}
+
+.link-button a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.link-button a {
+  color: #fff;
+}
+
+.link-button a:hover {
+  color: #fff;
+}
+
+h2 {
+  color: #007bff;
+  text-shadow: none;
+}
+
+/* Styling for the recipe form */
+.recipe-form h2 {
+  background-color: rgba(255, 255, 255, 0.6);
+  padding: 40px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.recipe-form form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.recipe-form .form-item {
+  margin: 10px 0;
+  text-align: left;
+  text-shadow: none;
+}
+
+.recipe-form label {
+  display: block;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.recipe-form input[type="text"],
+.recipe-form select {
+  width: 450px;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #000;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+.recipe-form textarea {
+  width: 100%;
+  height: 150px;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #000;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+.recipe-form button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.recipe-form button:hover {
+  background-color: #0069d9;
+  text-decoration: none;
+}
+
+/* Frosted glass effect for the form background */
+.recipe-form {
+  background-color: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
+  max-width: 500px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* alert styles */
+.alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+/* Styling for success messages */
+.alert-success {
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+  color: #3c763d;
+}
+
+/* Styling for error messages */
+.alert-error {
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  color: #a94442;
+}
+
+.pagination {
+  margin-bottom: 20px;
+}
