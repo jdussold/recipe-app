@@ -102,7 +102,7 @@ The Recipe Management App is currently maintained by the developer, John Dussold
 
 The application uses three main models to manage recipes and ingredients:
 
-1.  Recipe Model (`recipes\models.py`):
+1.  ### Recipe Model (`recipes\models.py`):
 
     The `Recipe` model represents individual recipes in the application. It has various fields to store recipe details, including title, cooking time, description, and difficulty. The `ingredients` field establishes a ManyToMany relationship with the `Ingredient` model through the `RecipeIngredient` model.
 
@@ -151,7 +151,7 @@ The `get_absolute_url` method is implemented to provide a URL for accessing the 
 
 These updates are essential to fully implement the functionality of the Recipe Management App. The `Recipe` model will now be able to store recipe details, calculate recipe difficulty, and provide a URL for viewing the recipe's detailed information.
 
-2. Ingredient Model (`ingredients\models.py`):
+2. ### Ingredient Model (`ingredients\models.py`):
 
 The `Ingredient` model represents individual ingredients used in various recipes. Each ingredient has a unique name, which is stored as a character field (`CharField`) with a maximum length of 255 characters.
 
@@ -167,7 +167,7 @@ name = models.CharField(max_length=255)
 
 The `__str__` method is overridden to display the name of the ingredient as its string representation, making it more readable and identifiable in the admin interface and other places where the ingredient object is used.
 
-3.  RecipeIngredient Model (`recipeingredients\models.py`):
+3.  ### RecipeIngredient Model (`recipeingredients\models.py`):
 
 The `RecipeIngredient` model acts as an intermediary between the `Recipe` and `Ingredient` models, creating a Many-to-Many relationship. It represents the ingredients used in a specific recipe. Each `RecipeIngredient` instance is associated with a single recipe and a single ingredient.
 
