@@ -4,6 +4,29 @@
 
 This is a recipe management application that allows users to create, modify, and discover a wide range of recipes. With its user-friendly interface and powerful features, the app simplifies the process of organizing and exploring recipes. Whether you're a cooking enthusiast or a professional chef, this app provides a seamless experience for managing your culinary creations.
 
+## Table of Contents
+
+- [Getting Started](#getting-started)
+- [How to Use the App](#how-to-use-the-app)
+  - [Browsing Recipes](#browsing-recipes)
+  - [Viewing Recipe Details](#viewing-recipe-details)
+  - [Adding New Recipes](#adding-new-recipes)
+  - [Exporting Recipes](#exporting-recipes)
+  - [Data Visualization](#data-visualization)
+  - [About Page](#about-page)
+- [Getting Help](#getting-help)
+- [Project Maintenance](#project-maintenance)
+- [User Goals](#user-goals)
+- [Models Overview](#models-overview)
+- [Calculating Recipe Difficulty](#calculating-recipe-difficulty)
+- [Database Entities](#database-entities)
+- [URLs](#urls)
+- [Forms and Functionality](#forms-and-functionality)
+- [Technical Requirements](#technical-requirements)
+- [Further Improvements](#further-improvements)
+- [Conclusion](#conclusion)
+- [About The Developer](#about-the-developer)
+
 ## Getting Started
 
 To get started with the Recipe Management App, follow these steps:
