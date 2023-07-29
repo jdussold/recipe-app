@@ -312,8 +312,6 @@ The app's URL configuration is as follows:
 
 ## Forms and Functionality
 
-![Recipe List](./docs/readme_images/Recipes-list.png)
-
 ### Recipe Search Form
 
 ![Recipe Search](./docs/readme_images/recipes-search.png)
