@@ -104,22 +104,54 @@ The application uses three main models to manage recipes and ingredients:
 
 1.  Recipe Model (`recipes\models.py`):
 
-    - `title`: The title of the recipe (CharField).
-    - `cooking_time`: The cooking time in minutes (PositiveIntegerField).
-    - `description`: A detailed description of the recipe (TextField).
-    - `difficulty`: The difficulty level of the recipe, automatically calculated based on cooking time and number of ingredients (CharField).
-    - `ingredients`: A ManyToMany relationship with the `Ingredient` model through the `RecipeIngredient` model.
+    The `Recipe` model represents individual recipes in the application. It has various fields to store recipe details, including title, cooking time, description, and difficulty. The `ingredients` field establishes a ManyToMany relationship with the `Ingredient` model through the `RecipeIngredient` model.
 
-2.  Ingredient Model (`ingredients\models.py`):
+    Additionally, the model includes a method `calculate_difficulty` to automatically calculate the recipe difficulty based on the cooking time and the number of ingredients.
 
-    - `name`: The name of the ingredient (CharField).
+```
+`from django.db import models
+from recipeingredients.models import RecipeIngredient
+from ingredients.models import Ingredient
+from django.shortcuts import reverse
 
-3.  RecipeIngredient Model (`recipeingredients\models.py`):
+class Recipe(models.Model):
+    title = models.CharField(max_length=50)
+    cooking_time = models.PositiveIntegerField(help_text="In minutes")
+    description = models.TextField()
+    difficulty = models.CharField(max_length=20, default="TBD")
+    ingredients = models.ManyToManyField(Ingredient, through=RecipeIngredient)
+    pic = models.ImageField(upload_to="recipes", default="no_picture.jpeg")
 
-    - `recipe`: A ForeignKey relationship with the `Recipe` model, representing the recipe that uses the ingredient.
-    - `ingredient`: A ForeignKey relationship with the `Ingredient` model, representing the ingredient used in the recipe.
+    def calculate_difficulty(self):
+        num_ingredients = self.ingredients.count()
 
-### Ingredient Model (`ingredients\models.py`):
+        if self.cooking_time < 10 and num_ingredients < 4:
+            return "Easy"
+        elif self.cooking_time < 10 and num_ingredients >= 4:
+            return "Medium"
+        elif self.cooking_time >= 10 and num_ingredients < 4:
+            return "Intermediate"
+        else:
+            return "Hard"
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse("recipes:recipes_detail", kwargs={"pk": self.pk})`
+```
+
+The `pic` field is an `ImageField` that allows users to upload an image for the recipe. The images are stored in the "recipes" directory.
+
+The `calculate_difficulty` method is used to calculate the recipe's difficulty level based on the cooking time and the number of ingredients. The difficulty level is stored in the `difficulty` field of the model.
+
+The `__str__` method is overridden to display the title of the recipe as its string representation, making it more readable and identifiable in the admin interface and other places where the recipe object is used.
+
+The `get_absolute_url` method is implemented to provide a URL for accessing the detailed view of a specific recipe using its primary key (`pk`) as an identifier.
+
+These updates are essential to fully implement the functionality of the Recipe Management App. The `Recipe` model will now be able to store recipe details, calculate recipe difficulty, and provide a URL for viewing the recipe's detailed information.
+
+2. Ingredient Model (`ingredients\models.py`):
 
 The `Ingredient` model represents individual ingredients used in various recipes. Each ingredient has a unique name, which is stored as a character field (`CharField`) with a maximum length of 255 characters.
 
@@ -135,7 +167,7 @@ name = models.CharField(max_length=255)
 
 The `__str__` method is overridden to display the name of the ingredient as its string representation, making it more readable and identifiable in the admin interface and other places where the ingredient object is used.
 
-### RecipeIngredient Model (`recipeingredients\models.py`):
+3.  RecipeIngredient Model (`recipeingredients\models.py`):
 
 The `RecipeIngredient` model acts as an intermediary between the `Recipe` and `Ingredient` models, creating a Many-to-Many relationship. It represents the ingredients used in a specific recipe. Each `RecipeIngredient` instance is associated with a single recipe and a single ingredient.
 
