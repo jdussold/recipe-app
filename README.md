@@ -22,12 +22,66 @@ This is a recipe management application that allows users to create, modify, and
 
 - **Database Connectivity and Design**: The app connects to a PostgreSQL database for production. During development, an SQLite database is used. The database configuration can be easily set up in the project's settings file.
 
-The application has four main entities:
+## Models Overview
 
-- `User`
-- `Recipe`
-- `Ingredient`
-- `RecipeIngredient`
+The application uses three main models to manage recipes and ingredients:
+
+1. **Recipe Model** (`recipes\models.py`):
+
+   - `title`: The title of the recipe (CharField).
+   - `cooking_time`: The cooking time in minutes (PositiveIntegerField).
+   - `description`: A detailed description of the recipe (TextField).
+   - `difficulty`: The difficulty level of the recipe, automatically calculated based on cooking time and number of ingredients (CharField).
+   - `ingredients`: A ManyToMany relationship with the `Ingredient` model through the `RecipeIngredient` model.
+
+2. **Ingredient Model** (`ingredients\models.py`):
+
+   - `name`: The name of the ingredient (CharField).
+
+3. **RecipeIngredient Model** (`recipeingredients\models.py`):
+   - `recipe`: A ForeignKey relationship with the `Recipe` model, representing the recipe that uses the ingredient.
+   - `ingredient`: A ForeignKey relationship with the `Ingredient` model, representing the ingredient used in the recipe.
+
+## Calculating Recipe Difficulty
+
+The `Recipe` model has a method named `calculate_difficulty` that automatically calculates the recipe difficulty based on the cooking time and the number of ingredients. The difficulty is determined as follows:
+
+- If the cooking time is less than 10 minutes and the number of ingredients is less than 4, the recipe is classified as "Easy."
+- If the cooking time is less than 10 minutes and the number of ingredients is 4 or more, the recipe is classified as "Medium."
+- If the cooking time is 10 minutes or more and the number of ingredients is less than 4, the recipe is classified as "Intermediate."
+- If the cooking time is 10 minutes or more and the number of ingredients is 4 or more, the recipe is classified as "Hard."
+
+## Database Entities
+
+The application's database includes the following entities and their corresponding attributes:
+
+- **User**:
+
+![Login Image](./docs/readme_images/login.png)
+
+- `id`: Unique Identifier (AutoField)
+- `username`: User's username (CharField)
+- `password`: User's password (CharField)
+
+- **Recipe**:
+
+  - `id`: Unique Identifier (AutoField)
+  - `user_id (FK)`: ForeignKey to User model (Foreign Key)
+  - `title`: Recipe title (CharField)
+  - `description`: Recipe description (CharField)
+  - `cooking_time`: Cooking time in minutes (PositiveIntegerField)
+  - `difficulty`: Recipe difficulty (CharField)
+
+- **Ingredient**:
+
+  - `id`: Unique Identifier (AutoField)
+  - `name`: Ingredient name (CharField)
+
+- **RecipeIngredient**:
+  - `id`: Unique Identifier (AutoField)
+  - `recipe_id (FK)`: ForeignKey to Recipe model (Foreign Key)
+  - `ingredient_id (FK)`: ForeignKey to Ingredient model (Foreign Key)
+  - `quantity`: Quantity of the ingredient used in the recipe (IntegerField)
 
 Here are the tables representing these entities:
 
@@ -66,65 +120,6 @@ Here are the tables representing these entities:
 | ingredient_id (FK) | Foreign Key       |
 | quantity           | Integer           |
 
-## Models Overview
-
-The application uses three main models to manage recipes and ingredients:
-
-1. **Recipe Model** (`recipes\models.py`):
-
-   - `title`: The title of the recipe (CharField).
-   - `cooking_time`: The cooking time in minutes (PositiveIntegerField).
-   - `description`: A detailed description of the recipe (TextField).
-   - `difficulty`: The difficulty level of the recipe, automatically calculated based on cooking time and number of ingredients (CharField).
-   - `ingredients`: A ManyToMany relationship with the `Ingredient` model through the `RecipeIngredient` model.
-
-2. **Ingredient Model** (`ingredients\models.py`):
-
-   - `name`: The name of the ingredient (CharField).
-
-3. **RecipeIngredient Model** (`recipeingredients\models.py`):
-   - `recipe`: A ForeignKey relationship with the `Recipe` model, representing the recipe that uses the ingredient.
-   - `ingredient`: A ForeignKey relationship with the `Ingredient` model, representing the ingredient used in the recipe.
-
-## Calculating Recipe Difficulty
-
-The `Recipe` model has a method named `calculate_difficulty` that automatically calculates the recipe difficulty based on the cooking time and the number of ingredients. The difficulty is determined as follows:
-
-- If the cooking time is less than 10 minutes and the number of ingredients is less than 4, the recipe is classified as "Easy."
-- If the cooking time is less than 10 minutes and the number of ingredients is 4 or more, the recipe is classified as "Medium."
-- If the cooking time is 10 minutes or more and the number of ingredients is less than 4, the recipe is classified as "Intermediate."
-- If the cooking time is 10 minutes or more and the number of ingredients is 4 or more, the recipe is classified as "Hard."
-
-## Database Entities
-
-The application's database includes the following entities and their corresponding attributes:
-
-- **User**:
-
-  - `id`: Unique Identifier (AutoField)
-  - `username`: User's username (CharField)
-  - `password`: User's password (CharField)
-
-- **Recipe**:
-
-  - `id`: Unique Identifier (AutoField)
-  - `user_id (FK)`: ForeignKey to User model (Foreign Key)
-  - `title`: Recipe title (CharField)
-  - `description`: Recipe description (CharField)
-  - `cooking_time`: Cooking time in minutes (PositiveIntegerField)
-  - `difficulty`: Recipe difficulty (CharField)
-
-- **Ingredient**:
-
-  - `id`: Unique Identifier (AutoField)
-  - `name`: Ingredient name (CharField)
-
-- **RecipeIngredient**:
-  - `id`: Unique Identifier (AutoField)
-  - `recipe_id (FK)`: ForeignKey to Recipe model (Foreign Key)
-  - `ingredient_id (FK)`: ForeignKey to Ingredient model (Foreign Key)
-  - `quantity`: Quantity of the ingredient used in the recipe (IntegerField)
-
 ## URLs
 
 The app's URL configuration is as follows:
@@ -149,15 +144,23 @@ The app's URL configuration is as follows:
 
 ## Forms and Functionality
 
+![Recipe List](./docs/readme_images/Recipes-list.png)
+
 ### Recipe Search Form
+
+![Recipe Search](./docs/readme_images/recipes-search.png)
 
 The app includes a search form named `RecipeSearchForm` that allows users to search for recipes based on recipe name, specific ingredients, and a choice of chart type for data visualization. Users can enter a recipe name or select one or more ingredients to filter the recipes. Additionally, users can choose from available chart types to visualize recipe data.
 
 ### Recipe Form
 
+![Recipe Form](./docs/readme_images/add-recipe.png)
+
 The `RecipeForm` class is a ModelForm that is used for adding new recipes to the database. It allows users to enter recipe details such as title, cooking time, description, and ingredients. The form automatically calculates the recipe difficulty based on the cooking time and total number of ingredients.
 
 ### New Ingredient Form
+
+![New Ingredient Form](./docs/readme_images/new-ingredient.png)
 
 The `NewIngredientForm` class is a simple form that allows users to add new ingredients while adding a new recipe. Users can enter the name of the new ingredient, and it will be saved in the database and associated with the recipe.
 
