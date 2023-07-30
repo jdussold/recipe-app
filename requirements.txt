@@ -84,10 +84,10 @@ python-dateutil==2.8.2
 python-docx==0.8.10
 python-dotenv==1.0.0
 PyTweening==1.0.3
-pytz==2023.3
+pytz>=2021.1
 pywin32-ctypes==0.2.0
 pywinpty==0.5.7
-pyzmail36==1.0.4
+pyzmail36>=1.0.5
 pyzmq==18.1.1
 regex==2020.2.20
 requests==2.22.0
