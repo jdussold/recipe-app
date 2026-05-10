@@ -10,6 +10,12 @@ from recipes.forms import RecipeSearchForm
 
 
 class RecipeModelTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username="testuser", password="testpassword"
+        )
+        self.client.login(username="testuser", password="testpassword")
+
     def test_recipe_string_representation(self):
         recipe = Recipe.objects.create(
             id=1, title="Test Recipe", cooking_time=30, description="Test description"
@@ -26,10 +32,7 @@ class RecipeModelTest(TestCase):
         RecipeIngredient.objects.create(recipe=recipe, ingredient=ingredient1)
         RecipeIngredient.objects.create(recipe=recipe, ingredient=ingredient2)
 
-        # force the recipe to update its difficulty level after ingredients are added
-        recipe.save()
-
-        self.assertEqual(recipe.difficulty, "Easy")
+        self.assertEqual(recipe.calculate_difficulty(), "Easy")
 
     # test for recipe difficulty (medium)
     def test_recipe_medium_difficulty(self):
@@ -49,10 +52,7 @@ class RecipeModelTest(TestCase):
         RecipeIngredient.objects.create(recipe=recipe, ingredient=ingredient4)
         RecipeIngredient.objects.create(recipe=recipe, ingredient=ingredient5)
 
-        # force the recipe to update its difficulty level after ingredients are added
-        recipe.save()
-
-        self.assertEqual(recipe.difficulty, "Medium")
+        self.assertEqual(recipe.calculate_difficulty(), "Medium")
 
     # test for recipe difficulty (intermediate)
     def test_recipe_intermediate_difficulty(self):
@@ -68,10 +68,7 @@ class RecipeModelTest(TestCase):
         RecipeIngredient.objects.create(recipe=recipe, ingredient=ingredient2)
         RecipeIngredient.objects.create(recipe=recipe, ingredient=ingredient3)
 
-        # force the recipe to update its difficulty level after ingredients are added
-        recipe.save()
-
-        self.assertEqual(recipe.difficulty, "Intermediate")
+        self.assertEqual(recipe.calculate_difficulty(), "Intermediate")
 
     # test for recipe difficulty (hard)
     def test_recipe_hard_difficulty(self):
@@ -91,10 +88,7 @@ class RecipeModelTest(TestCase):
         RecipeIngredient.objects.create(recipe=recipe, ingredient=ingredient4)
         RecipeIngredient.objects.create(recipe=recipe, ingredient=ingredient5)
 
-        # force the recipe to update its difficulty level after ingredients are added
-        recipe.save()
-
-        self.assertEqual(recipe.difficulty, "Hard")
+        self.assertEqual(recipe.calculate_difficulty(), "Hard")
 
     # test the recipe ingredients relationship
     def test_recipe_ingredients(self):
@@ -112,7 +106,7 @@ class RecipeModelTest(TestCase):
         recipe = Recipe.objects.create(
             id=1, title="Test Recipe", cooking_time=30, description="Test description"
         )
-        self.assertEqual(recipe.get_absolute_url(), "/recipes/1")
+        self.assertEqual(recipe.get_absolute_url(), "/recipes/1/")
 
     # test RecipesListView
     def test_recipes_list_view(self):
@@ -135,7 +129,7 @@ class RecipeModelTest(TestCase):
         recipe = Recipe.objects.create(
             id=1, title="Test Recipe", cooking_time=30, description="Test description"
         )
-        response = self.client.get("/recipes/1")
+        response = self.client.get("/recipes/1/")
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "recipes/recipes_detail.html")
 
@@ -144,7 +138,7 @@ class RecipeModelTest(TestCase):
         recipe = Recipe.objects.create(
             id=1, title="Test Recipe", cooking_time=30, description="Test description"
         )
-        response = self.client.get("/recipes/1")
+        response = self.client.get("/recipes/1/")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["recipe"], recipe)
 
@@ -166,8 +160,8 @@ class RecipeSearchFormTest(TestCase):
         recipe1.ingredients.add(ingredient1)
         recipe2.ingredients.add(ingredient2)
 
-        # Create additional recipes
-        for i in range(3, 13):  # Creates 10 additional recipes with ids 3 to 12
+        # Create additional recipes (15 total exceeds paginate_by=12)
+        for i in range(3, 16):
             recipe = Recipe.objects.create(
                 id=i, title=f"Recipe {i}", cooking_time=(i + 1) * 10
             )

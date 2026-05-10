@@ -31,23 +31,35 @@ This is a recipe management application that allows users to create, modify, and
 
 To get started with the Recipe Management App, follow these steps:
 
-1. **Installation**: Ensure you have Python 3.6+ and Django 3 installed on your machine.
+1. **Prerequisites**: Python 3.12+ installed on your machine.
 
 2. **Clone the Repository**: Clone the project repository from GitHub to your local machine.
 
-3. **Install Dependencies**: Install the required modules by running the following command in your terminal:
+3. **Create a virtual environment and install dependencies**:
 
-`pip install -r requirements.txt`
+   ```bash
+   python3.12 -m venv .venv
+   source .venv/bin/activate
+   pip install -r requirements.txt
+   ```
 
-4. **Database Configuration**: Set up the database configuration in the project's settings file. For development, use SQLite. For production, configure PostgreSQL.
+4. **Configure environment variables**: Copy the example file and adjust as needed. Defaults work for local development with SQLite.
 
-5. **Run Migrations**: Apply the database migrations using the following command:
+   ```bash
+   cp .env.example .env
+   ```
 
-`python manage.py migrate`
+5. **Run migrations**:
 
-6. **Start the Server**: Start the development server with the following command:
+   ```bash
+   python manage.py migrate
+   ```
 
-`python manage.py runserver`
+6. **Start the development server**:
+
+   ```bash
+   python manage.py runserver
+   ```
 
 7. **Access the App**: Open a web browser and navigate to `http://localhost:8000` to access the application.
 
@@ -357,7 +369,7 @@ The `NewIngredientForm` class is a simple form that allows users to add new ingr
 
 To run the application, ensure the following technical requirements are met:
 
-- **Python 3.6+ and Django 3 installations**: The app is built using Python programming language and utilizes Django, a high-level web framework, for efficient development.
+- **Python 3.12+ and Django 5.2**: The app is built using Python and Django, a high-level web framework, for efficient development.
 
 - **Exception Handling**: The application incorporates robust exception handling to gracefully handle errors that may occur during user input. It provides user-friendly error messages to guide users in resolving any issues.
 
