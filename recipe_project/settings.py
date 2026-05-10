@@ -24,18 +24,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# Read the secret key from the environment variable
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
+SECRET_KEY = os.environ.get(
+    "DJANGO_SECRET_KEY",
+    "django-insecure-dev-only-do-not-use-in-prod",
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.environ.get("DJANGO_DEBUG", "False").lower() == "true"
 
-ALLOWED_HOSTS = [
-    "desolate-meadow-45396-42aa33eddc2d.herokuapp.com",
-    ".vercel.app",
-    "127.0.0.1",
-    "localhost",
-]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 
 # Application definition
@@ -143,7 +143,14 @@ STATICFILES_DIRS = [
 # The absolute path to the directory where collectstatic will collect static files for deployment.
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
-DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.RawMediaCloudinaryStorage"
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.RawMediaCloudinaryStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
