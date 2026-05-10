@@ -143,9 +143,16 @@ STATICFILES_DIRS = [
 # The absolute path to the directory where collectstatic will collect static files for deployment.
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
+# Use Cloudinary when credentials are configured; fall back to local
+# FileSystemStorage so the app and tests can run without Cloudinary creds.
+_USE_CLOUDINARY = bool(os.environ.get("CLOUDINARY_CLOUD_NAME"))
 STORAGES = {
     "default": {
-        "BACKEND": "cloudinary_storage.storage.RawMediaCloudinaryStorage",
+        "BACKEND": (
+            "cloudinary_storage.storage.RawMediaCloudinaryStorage"
+            if _USE_CLOUDINARY
+            else "django.core.files.storage.FileSystemStorage"
+        ),
     },
     "staticfiles": {
         "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
