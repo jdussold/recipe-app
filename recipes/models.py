@@ -29,14 +29,3 @@ class Recipe(models.Model):
 
     def get_absolute_url(self):
         return reverse("recipes:recipes_detail", kwargs={"pk": self.pk})
-
-
-"""
-    def save(self, *args, **kwargs):
-        # First, save the instance to ensure it has an ID
-        super().save(*args, **kwargs)
-
-        # Then, calculate and update the difficulty
-        self.difficulty = self.calculate_difficulty()
-        super().save(*args, **kwargs)
-"""
